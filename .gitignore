@@ -1,0 +1,8 @@
+
+MusicStore/obj/
+
+.vs/
+
+MusicStore/bin/
+
+*.user
