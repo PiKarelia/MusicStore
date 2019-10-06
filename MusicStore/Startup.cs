@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using MSt.Context;
+using MusicStore.Services;
 
 namespace MusicStore
 {
@@ -32,6 +33,14 @@ namespace MusicStore
             );
 
             services.AddControllers();
+
+            services.AddScoped<AuthService>();
+
+            services.AddScoped<Encryptor>();
+
+            services.AddSingleton(opt => new JwtConfiguration { JwtSecretKey = "8Zz5tw0Ionm3XPZZfN0NOml3z9FMfmpgXwovR9fp6ryDIoGRM8EPHAB6iHsc0fb" });
+
+            services.AddScoped<JwtHelper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
