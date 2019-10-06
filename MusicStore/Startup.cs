@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -12,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using MSt.Context;
+using MusicStore.Authorization;
 using MusicStore.Services;
 
 namespace MusicStore
@@ -28,9 +31,14 @@ namespace MusicStore
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IAuthorizationPolicyProvider, ClaimRequirementProvider>();
+            services.AddSingleton<IAuthorizationHandler, ClaimRequirementHandler>();
+
             services.AddDbContext<MusicStoreDbContext>(option =>
             option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
             );
+
+            services.AddAuthentication().AddCookie();
 
             services.AddControllers();
 
@@ -55,6 +63,7 @@ namespace MusicStore
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
