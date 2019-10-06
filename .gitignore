@@ -1,8 +1,7 @@
 
-MusicStore/obj/
+.vs/**
 
-.vs/
-
-MusicStore/bin/
+*/bin/**
+*/obj/**
 
 *.user
